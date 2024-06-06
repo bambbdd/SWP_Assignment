@@ -45,13 +45,13 @@ public class StuffSection extends JPanel {
     public String getNewTags() { return this.tagsField.getText(); }
 
     public String getStuff() {
-         return this.newStuff.getStuffInfo();
+        return this.newStuff.getStuffInfo();
     }
 
     public void setStuff() {
-        String type = this.getNewType();
-        String name = this.getNewName();
-        String tags = this.getNewTags();
+        String type = this.getNewType().trim();
+        String name = this.getNewName().trim();
+        String tags = this.getNewTags().trim();
         String ID = StuffList.setStuffID(name);
 
         String trimStuff = String.format("%s;%s;%s;%s", ID, type, name, tags);

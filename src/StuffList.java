@@ -59,4 +59,12 @@ public class StuffList {
         }
         return allocateID();
     }
+
+    public static void refreshStuff(Stuff stuff_value) {
+        for(int i = 0 ; i < size; i++) {
+            if(stuffArr[i].getID().equals(stuff_value.getID())) {
+                stuffArr[i] = stuff_value;
+            }
+        }
+    }
 }

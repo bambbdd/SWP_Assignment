@@ -4,6 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SearchPictureFrame extends JFrame {
+    private JTextField fromTextField;
+    private JTextField toTextField;
+    private JTextArea tagsTextArea;
+    private JTextArea commentsTextArea;
+    private JTextField stuffTypeTextField;
+    private JTextField stuffNameTextField;
+    private JTextField stuffTagsTextField;
+    private JTextField generalSearchTextField;
+
     public SearchPictureFrame() {
         setSize(570, 400);
         setTitle("Search Picture");
@@ -16,12 +25,12 @@ public class SearchPictureFrame extends JFrame {
         timeSearchPanel.setBorder(BorderFactory.createTitledBorder("Time Search"));
 
         timeSearchPanel.add(new JLabel("From"));
-        JTextField fromText = new JTextField(20);
-        timeSearchPanel.add(fromText);
+        fromTextField = new JTextField(20);
+        timeSearchPanel.add(fromTextField);
         timeSearchPanel.add(new JLabel("yyyy-MM-dd_HH:mm:ss"));
         timeSearchPanel.add(new JLabel("To"));
-        JTextField toText = new JTextField(20);
-        timeSearchPanel.add(toText);
+        toTextField = new JTextField(20);
+        timeSearchPanel.add(toTextField);
 
 
         JPanel keywordSearchPanel = new JPanel(new BorderLayout());
@@ -31,9 +40,11 @@ public class SearchPictureFrame extends JFrame {
 
         JPanel TagsCommentsPanel = new JPanel(new GridLayout(2, 2, 5, 5));
         TagsCommentsPanel.add(new Label("Tags"));
-        TagsCommentsPanel.add(new TextArea());
+        tagsTextArea = new JTextArea();
+        TagsCommentsPanel.add(tagsTextArea);
         TagsCommentsPanel.add(new Label("Comments"));
-        TagsCommentsPanel.add(new TextArea());
+        commentsTextArea = new JTextArea();
+        TagsCommentsPanel.add(commentsTextArea);
         keywordCenterPanel.add(TagsCommentsPanel);
 
         JPanel stuffPanel = new JPanel();
@@ -42,15 +53,18 @@ public class SearchPictureFrame extends JFrame {
 
         JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         typePanel.add(new JLabel("Type "));
-        typePanel.add(new TextField(20));
+        stuffTypeTextField = new JTextField(23);
+        typePanel.add(stuffTypeTextField);
 
         JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         namePanel.add(new JLabel("Name"));
-        namePanel.add(new TextField(20));
+        stuffNameTextField = new JTextField(23);
+        namePanel.add(stuffNameTextField);
 
         JPanel tagsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         tagsPanel.add(new JLabel("Tags  "));
-        tagsPanel.add(new TextField(20));
+        stuffTagsTextField = new JTextField(23);
+        tagsPanel.add(stuffTagsTextField);
 
         stuffPanel.add(typePanel);
         stuffPanel.add(namePanel);
@@ -61,7 +75,8 @@ public class SearchPictureFrame extends JFrame {
 
         JPanel keywordBottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         keywordBottomPanel.add(new JLabel("General Search"));
-        keywordBottomPanel.add(new JTextField(10));
+        generalSearchTextField = new JTextField(10);
+        keywordBottomPanel.add(generalSearchTextField);
 
         keywordSearchPanel.add(keywordBottomPanel, BorderLayout.SOUTH);
         keywordSearchPanel.add(keywordCenterPanel, BorderLayout.CENTER);
@@ -74,6 +89,21 @@ public class SearchPictureFrame extends JFrame {
         btnPanel.add(orSearch);
         JButton close = new JButton("CLOSE");
         btnPanel.add(close);
+
+        andSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        orSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,4 +118,13 @@ public class SearchPictureFrame extends JFrame {
         add(mainPanel);
         setVisible(true);
     }
+
+    public String getFromTextField() { return this.fromTextField.getText(); }
+    public String getToTextField() { return this.toTextField.getText(); }
+    public String getTagsTextArea() { return this.tagsTextArea.getText(); }
+    public String getCommentsTextArea() { return this.commentsTextArea.getText(); }
+    public String getStuffTypeTextField() {return this.stuffTypeTextField.getText(); }
+    public String getStuffNameTextField() { return this.stuffNameTextField.getText(); }
+    public String getStuffTagsTextField() { return this.stuffTagsTextField.getText(); }
+    public String getGeneralSearchTextField() { return this.generalSearchTextField.getText(); }
 }

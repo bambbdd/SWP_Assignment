@@ -112,6 +112,7 @@ public class PictureList {
         }
     }
 
+
     // trimTxt to trim and remove >, <
     private String trimTxt(String txt) { return txt.trim().replaceAll(">", "").replace("<", ""); }
 

@@ -29,7 +29,7 @@ public class Stuff {
     public String getName() { return this.name; }
     public String getTag() { return this.tag; }
 
-    public int getIDAsInt() { return Integer.parseInt(this.ID); }
+    public int getIDAsInt() { return Integer.parseInt(this.ID.trim()); }
 
     public String getStuffInfo() {
         return String.format(" [%s; %s; %s; %s ]", ID, type, name, tag);

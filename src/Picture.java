@@ -14,12 +14,12 @@ public class Picture {
     }
 
     public Picture(String[] infoFields) {
-        this.ID = setID(infoFields[0]);
-        this.timestamp = setTimestamp(infoFields[1]);
-        this.Image = setImageInfo(infoFields[2]);
-        this.stuff = setStuffInfo(infoFields[3]);
-        this.Tag = setTagInfo(infoFields[4]);
-        this.comment = setCommentInfo(infoFields[5]);
+        setIDInfo(infoFields[0]);
+        setTimestampInfo(infoFields[1]);
+        setImageInfo(infoFields[2]);
+        setStuffInfo(infoFields[3]);
+        setTagInfo(infoFields[4]);
+        setCommentInfo(infoFields[5]);
     }
 
     // print all args(except for Stuff, Tag, comment)
@@ -58,21 +58,22 @@ public class Picture {
     private String trimTxt(String txt) { return txt.trim().replaceAll(">", "").replace("<", ""); }
 
     // setID to initialize
-     public String setID(String ID) {
-        return trimTxt(ID);
+     public void setIDInfo(String ID) {
+        this.ID = trimTxt(ID);
     }
 
     // setTimestamp to initialize
-    public String setTimestamp(String timestamp) {
-        return trimTxt(timestamp);
+    public void setTimestampInfo(String timestamp) {
+        this.timestamp = trimTxt(timestamp);
     }
 
     // setImageInfo to initialize
-    public String setImageInfo(String ImageInfo) {
-        return trimTxt(ImageInfo);
+    public void setImageInfo(String ImageInfo) {
+        this.Image = trimTxt(ImageInfo);
     }
 
-    public Stuff[] setStuffInfo(String StuffInfo) {
+    public void setStuffInfo(String StuffInfo) {
+        this.stuffIdx = 0;
         String trimStuffInfo = trimTxt(StuffInfo);
         String[] strArr = trimStuffInfo.split("]");
         Stuff[] stuffArr = new Stuff[10];
@@ -84,17 +85,18 @@ public class Picture {
                 stuffArr[this.stuffIdx++] = new Stuff(tmp);
             }
         }
-        return stuffArr;
+
+        this.stuff = stuffArr;
     }
 
-    public String setTagInfo(String TagInfo) {
+    public void setTagInfo(String TagInfo) {
         String trimTagInfo =  trimTxt(TagInfo);
         trimTagInfo = trimTagInfo.replaceAll("#", " #");
-        return trimTagInfo.trim();
+        this.Tag = trimTagInfo.trim();
     }
 
-    public String setCommentInfo(String CommentInfo) {
-        return trimTxt(CommentInfo);
+    public void setCommentInfo(String CommentInfo) {
+        this.comment = trimTxt(CommentInfo);
     }
 
     public String getPictureInfo() {

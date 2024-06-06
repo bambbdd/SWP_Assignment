@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class PictureSearchPanel extends JPanel {
     PicturePanel picPanel;
@@ -18,6 +19,17 @@ public class PictureSearchPanel extends JPanel {
         add(this.scrollPane, BorderLayout.CENTER);
 
         JButton btnShowAllPictures = new JButton("Show All Pictures");
+        btnShowAllPictures.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PictureList showAllPictures = new PictureList(PictureSearchFrame.getFilePath());
+                picPanel = new PicturePanel(showAllPictures);
+
+                scrollPane.setViewportView(picPanel);
+                picPanel.revalidate();
+                picPanel.repaint();
+            }
+        });
         add(btnShowAllPictures, BorderLayout.NORTH);
 
         JPanel panel = new JPanel();
@@ -55,6 +67,17 @@ public class PictureSearchPanel extends JPanel {
         panel.add(btnLoad);
 
         JButton btnSave = new JButton("SAVE");
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ButtonSave newButtonSave = new ButtonSave(picPanel);
+                try {
+                    newButtonSave.writePicturesToFile();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         panel.add(btnSave);
 
         JButton btnSearch = new JButton("SEARCH");
@@ -66,5 +89,15 @@ public class PictureSearchPanel extends JPanel {
             }
         });
         panel.add(btnSearch);
+    }
+
+    public void refreshPicPanel(PictureList pictureList) {
+        picPanel = new PicturePanel(pictureList);
+
+        scrollPane.setViewportView(picPanel);
+        picPanel.revalidate();
+        picPanel.repaint();
+        revalidate();
+        repaint();
     }
 }

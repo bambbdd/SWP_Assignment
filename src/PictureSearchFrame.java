@@ -2,14 +2,17 @@ import javax.swing.*;
 
 public class PictureSearchFrame extends JFrame {
     private static String filePath;
+    private static PictureList newPictureList;
+    private static PictureSearchPanel newPictureSearchPanel;
 
     public PictureSearchFrame() {
         System.out.println("Filename Required");
     }
     public PictureSearchFrame(String Filename) {
         filePath = Filename;
-        PictureList newPictureList = new PictureList(Filename);
-        add(new PictureSearchPanel(newPictureList));
+        newPictureList = new PictureList(Filename);
+        newPictureSearchPanel = new PictureSearchPanel(newPictureList);
+        add(newPictureSearchPanel);
         setSize(800, 800);
         setTitle("Simple Picture Search");
         setVisible(true);
@@ -17,5 +20,10 @@ public class PictureSearchFrame extends JFrame {
     }
 
     public static void setNewFilePath(String newFilePath) { filePath = newFilePath; }
+    public static void setNewPictureSearchPanel() {
+        newPictureList = new PictureList(filePath);
+        newPictureSearchPanel.refreshPicPanel(newPictureList);
+    }
     public static String getFilePath() { return filePath; }
+
 }

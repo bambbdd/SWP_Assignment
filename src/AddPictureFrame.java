@@ -3,11 +3,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddPictureFrame extends JFrame {
     private StuffSection[] stuffSection = new StuffSection[10];
     private int stuffSectionCount = 0;
     private Picture newPicture;
+    private String newPicturePath = "";
     private JTextField timeText;
     private JTextField tagsText;
     private JTextField commentsText;
@@ -81,13 +84,28 @@ public class AddPictureFrame extends JFrame {
             }
         });
 
+        SelectImageFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedFilePath = "";
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(null);
+                if(result == JFileChooser.APPROVE_OPTION) {
+                    selectedFilePath = fileChooser.getSelectedFile().getPath();
+                }
+                String fileNameWithExt = new File(selectedFilePath).getName();
+                String fileName = fileNameWithExt.substring(0, fileNameWithExt.lastIndexOf('.'));
+                newPicturePath = fileName;
+            }
+        });
+
         InputEnd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] pictureInfo = new String[6];
                 pictureInfo[0] = "m_" + timeText.getText();
                 pictureInfo[1] = timeText.getText();
-                pictureInfo[2] = "ImageInfo";
+                pictureInfo[2] = String.format("IMG%s; images/%s.jpg; ; ", timeText.getText(), newPicturePath);
                 pictureInfo[4] = tagsText.getText();
                 pictureInfo[5] = commentsText.getText();
 
@@ -100,71 +118,56 @@ public class AddPictureFrame extends JFrame {
 
                 newPicture = new Picture(pictureInfo);
                 writePicture(newPicture.getPictureInfo());
+                scrollablePanel.revalidate();
+                scrollablePanel.repaint();
+
+                PictureSearchFrame.setNewPictureSearchPanel();
+
                 dispose();
             }
         });
     }
 
-    public void writePicture(String InputString) {
+    public void writePicture(String inputString) {
         File file = new File(PictureSearchFrame.getFilePath());
-        BufferedReader reader = null;
-        BufferedWriter writer = null;
-        boolean endTagFound = false;
+        List<String> fileContent = new ArrayList<>();
 
-        try {
-            reader = new BufferedReader(new FileReader(file));
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            boolean startTagFound = false;
+            boolean endTagFound = false;
 
             while ((line = reader.readLine()) != null) {
-                if (line.trim().equals("// end of Picture information saved by GUI")) {
+                if (line.trim().equals("// Picture information - saved by GUI")) {
+                    startTagFound = true;
+                } else if (line.trim().equals("// end of Picture information saved by GUI")) {
                     endTagFound = true;
-                    break;
+                }
+
+                if (startTagFound && !endTagFound) {
+                    fileContent.add(line);
                 }
             }
 
-            if (!endTagFound) {
-                System.out.println("End Tag Not Found");
+            if (!startTagFound || !endTagFound) {
+                System.out.println("Start Tag or End Tag Not Found");
                 return;
             }
 
-            File tempFile = new File(file.getAbsolutePath() + ".temp");
-            writer = new BufferedWriter(new FileWriter(tempFile));
-
-            reader.close();
-            reader = new BufferedReader(new FileReader(file));
-
-            while ((line = reader.readLine()) != null) {
-                writer.write(line);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (String content : fileContent) {
+                    writer.write(content);
+                    writer.newLine();
+                }
+                writer.write(inputString);
                 writer.newLine();
-                if (line.trim().equals("// end of Picture information saved by GUI")) {
-                    writer.write(InputString);
-                    writer.newLine();
-                    writer.write("// end of Picture information saved by GUI");
-                    writer.newLine();
-                }
+                writer.write("// end of Picture information saved by GUI\n");
             }
-
-        } catch (Exception e) {
-            System.out.println("Failed To Add Picture");
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        File originalFile = new File(PictureSearchFrame.getFilePath());
-        File tempFile = new File(originalFile.getAbsolutePath() + ".temp");
-        if (tempFile.renameTo(originalFile)) {
-            System.out.println("File updated successfully!");
-        } else {
-            System.out.println("Failed to update file!");
+        } catch (IOException e) {
+            System.out.println("Failed to add picture: " + e.getMessage());
         }
     }
+
+
+
 }
