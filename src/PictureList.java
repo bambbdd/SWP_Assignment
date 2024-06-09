@@ -5,11 +5,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class PictureList {
+    private String sourceFileName;
     private Picture[] pictureArr;
     private int size;
 
     public PictureList(String infoFileName) {
         // initialize PictureList
+        this.sourceFileName = infoFileName;
         this.pictureArr = new Picture[100];
         this.size = 0;
 
@@ -83,7 +85,7 @@ public class PictureList {
     }
 
     // return the size of PictureList(pictureArr)
-    public int size() { return this.size; }
+    public int getSize() { return this.size; }
 
     // return the Picture with correct index
     public Picture get(int i) {
@@ -112,6 +114,16 @@ public class PictureList {
         }
     }
 
+    public PictureList duplicatePictureList() {
+        return new PictureList(this.sourceFileName);
+    }
+
+    public void deletePictureByIndex(int index) {
+        for(int i = index; i < this.size; i++) {
+            this.pictureArr[i] = this.pictureArr[i + 1];
+        }
+        this.size--;
+    }
 
     // trimTxt to trim and remove >, <
     private String trimTxt(String txt) { return txt.trim().replaceAll(">", "").replace("<", ""); }

@@ -54,6 +54,8 @@ public class Picture {
 
     public String getComment() { return this.comment; }
 
+    public int getStuffIdx() { return this.stuffIdx; }
+
     // trimTxt to trim and remove >, <
     private String trimTxt(String txt) { return txt.trim().replaceAll(">", "").replace("<", ""); }
 

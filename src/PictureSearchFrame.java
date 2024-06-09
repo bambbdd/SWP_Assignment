@@ -20,7 +20,7 @@ public class PictureSearchFrame extends JFrame {
     }
 
     public static void setNewFilePath(String newFilePath) { filePath = newFilePath; }
-    public static void setNewPictureSearchPanel() {
+    public static void setOriginalPictureSearchPanel() {
         newPictureList = new PictureList(filePath);
         newPictureSearchPanel.refreshPicPanel(newPictureList);
     }

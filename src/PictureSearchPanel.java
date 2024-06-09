@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class PictureSearchPanel extends JPanel {
-    PicturePanel picPanel;
-    JScrollPane scrollPane;
+    private PicturePanel picPanel;
+    private JScrollPane scrollPane;
     public PictureSearchPanel() {
         this(null);
     }
@@ -84,7 +84,7 @@ public class PictureSearchPanel extends JPanel {
         btnSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SearchPictureFrame newSearchPictureFrame = new SearchPictureFrame();
+                SearchPictureFrame newSearchPictureFrame = new SearchPictureFrame(getThisPictureSearchPanel());
                 newSearchPictureFrame.setVisible(true);
             }
         });
@@ -100,4 +100,8 @@ public class PictureSearchPanel extends JPanel {
         revalidate();
         repaint();
     }
+
+    public PicturePanel getPicturePanel() { return this.picPanel; }
+
+    public PictureSearchPanel getThisPictureSearchPanel() { return this; }
 }

@@ -121,7 +121,7 @@ public class AddPictureFrame extends JFrame {
                 scrollablePanel.revalidate();
                 scrollablePanel.repaint();
 
-                PictureSearchFrame.setNewPictureSearchPanel();
+                PictureSearchFrame.setOriginalPictureSearchPanel();
 
                 dispose();
             }
